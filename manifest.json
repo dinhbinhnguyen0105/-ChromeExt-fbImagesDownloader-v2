@@ -1,0 +1,34 @@
+{
+    "name": "Facebook downloader",
+    "version": "0.1.0",
+    "description": "Download images and content",
+    "permissions": ["storage", "tabs"],
+    "host_permissions": ["https://www.facebook.com/*"],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://www.facebook.com/*"],
+        "js": ["contentScript.js"]
+      }
+    ],
+    "action": {
+      "default_icon": {
+        "16": "assets/download.png",
+        "24": "assets/download.png",
+        "32": "assets/download.png",
+        "128": "assets/download.png"
+
+      },
+      "default_title": "Facebook download images",
+      "default_popup": "popup.html"
+    },
+    "icons": {
+        "16": "assets/download.png",
+        "24": "assets/download.png",
+        "32": "assets/download.png",
+        "128": "assets/download.png"
+    },
+    "manifest_version": 3
+}
