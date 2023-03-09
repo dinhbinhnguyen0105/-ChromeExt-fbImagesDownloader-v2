@@ -1,25 +1,23 @@
 console.log('contentScript.js');
 chrome.runtime.onMessage.addListener((request, sender, sendRes) => {
-    const dialogs = document.querySelectorAll('div[role="dialog"]');
-    let dialog = null;
-    dialogs.forEach(_dialog => {
-        if(_dialog.offsetWidth > 0) {
-            dialog = _dialog;
-        };
-    })
+    const lang = document.documentElement.lang;
+    let imageIndex = 0;
+    while(true) {
+        if(lang === 'vi') {
+            labelImage = `aria-label="Hình thu nhỏ ${imageIndex}"`;
+        } else if (lang === 'en') {
+            labelImage = `aria-label="Thumbnail ${imageIndex}"`;
+        }
+        const thumbnailElm = document.querySelector(`div[${labelImage}]`);
+        if(thumbnailElm === null) {
+            break;
+        }
 
-    const imagesElm = dialog.querySelectorAll('img[referrerpolicy="origin-when-cross-origin"]');
-    if (imagesElm.length > 0) {
-        const imagesSrc = [];
-        imagesElm.forEach((image) => {
-            const srcAtt = image.getAttribute('src');
-            if(!imagesSrc.includes(srcAtt)) 
-            imagesSrc.push(srcAtt)
-        });
-        imagesSrc.forEach(imageSrc => {
-            downloadImage(imageSrc, getName(imageSrc));
-        })
-        sendRes({ response: 'Downloaded' });
+        const imageElement = thumbnailElm.querySelector('img');
+        const imageSource = imageElement.getAttribute('src');
+        downloadImage(imageSource, getName(imageSource));
+
+        imageIndex += 1;        
     }
 });
 
